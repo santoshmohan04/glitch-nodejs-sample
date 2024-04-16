@@ -23,19 +23,24 @@ async function connectDB() {
   try {
     await client.connect();
     console.log("Connected to MongoDB");
-    return client.db("test").collection("employeesdata");
+    const db = client.db("test");
+    const collection = db.collection("employeesdata");
+    return collection; // Return the collection directly
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
+    throw error; // Re-throw for proper error handling in API route
   }
 }
 
 // Get Employees Records Route
-router.get("/employees", async function (req, res) {
+router.get("/employees", async (req, res) => {
   try {
-    const users = await connectDB().find().limit(20).toArray();
-    res.send(users);
+    const collection = await connectDB(); // Get the collection
+    const users = await collection.find().toArray(); // Await data fetching
+    res.json(users);
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    console.error("Error fetching employees:", err);
+    res.status(500).json({ message: "Error fetching employees" }); // Handle generic error
   }
 });
 

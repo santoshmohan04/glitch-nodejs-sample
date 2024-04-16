@@ -17,7 +17,7 @@
     "mongoose": "^8.3.1"
   },
   "engines": {
-    "node": "16.x"
+    "node": ">=16.0.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/glitch-hello-node"
